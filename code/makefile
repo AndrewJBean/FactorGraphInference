@@ -1,6 +1,6 @@
 CC = clang++
 CFLAGS = -std=c++11 -O3
-EXTRA = 
+EXTRA =
 
 all:
 	make -j16 all2
@@ -10,7 +10,7 @@ s:
 
 copy:
 	scp makefile *.cpp *.h ajbean@csp-serv-01.csp.illinois.edu:~/inheritance/
-	
+
 all2: GraphSolver.o SumProductBP.o BetaStepBP.o ProjectionBP.o AProjectionBP.o ZoomBP.o FastZoomBP.o KProjectionBP.o StochasticBP.o StochasticBP2.o Energy.bin StepDist.bin Disparities.bin test.bin
 
 
@@ -44,7 +44,7 @@ FastZoomBP.o: FastZoomBP.cpp FastZoomBP.h DiscreteFactorGraph.h FloatType.h Grap
 	$(CC) $(CFLAGS) $(EXTRA) -c FastZoomBP.cpp -o FastZoomBP.o
 
 # NewZoomBP.o: NewZoomBP.cpp NewZoomBP.h DiscreteFactorGraph.h FloatType.h GraphSolver.h
-# 	$(CC) $(CFLAGS) $(EXTRA) -c NewZoomBP.cpp -o NewZoomBP.o
+#   $(CC) $(CFLAGS) $(EXTRA) -c NewZoomBP.cpp -o NewZoomBP.o
 
 KProjectionBP.o: KProjectionBP.cpp KProjectionBP.h DiscreteFactorGraph.h FloatType.h GraphSolver.h
 	$(CC) $(CFLAGS) $(EXTRA) -c KProjectionBP.cpp -o KProjectionBP.o

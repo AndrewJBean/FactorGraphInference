@@ -9,68 +9,68 @@ int const AlgoIters = 30;
 
 namespace
 {
-	void MyPut(FloatType value)
-	{
-		fwrite(&(value), sizeof(value), 1, stdout);
-	}
-	void Normalize(vector<FloatType> & vec)
-	{
-		FloatType Total = 0.0;
-		for(auto i:vec)
-			Total+=i;
-		for(auto & i:vec)
-			i/=Total;
-	}
+    void MyPut(FloatType value)
+    {
+        fwrite(&(value), sizeof(value), 1, stdout);
+    }
+    void Normalize(vector<FloatType> & vec)
+    {
+        FloatType Total = 0.0;
+        for(auto i:vec)
+            Total+=i;
+        for(auto & i:vec)
+            i/=Total;
+    }
 };
 
 int main(int argc, char** argv)
 {
-	cerr << "Read the factor graph from stdin." << endl;
-	FactorGraph JustTheGraph;
-	JustTheGraph.ReadGraphBin();
+    cerr << "Read the factor graph from stdin." << endl;
+    FactorGraph JustTheGraph;
+    JustTheGraph.ReadGraphBin();
 
-	/////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////
 
-	SumProductBP OneSolver;
+    SumProductBP OneSolver;
 
-	cerr << "Convergence of " << OneSolver.IDString() << "." << endl;
-	cerr << OneSolver.PrintParams() << endl;
+    cerr << "Convergence of " << OneSolver.IDString() << "." << endl;
+    cerr << OneSolver.PrintParams() << endl;
 
-	vector< FloatType > theDist;
-	theDist.resize(AlgoIters);
+    vector< FloatType > theDist;
+    theDist.resize(AlgoIters);
 
-	clock_t begin_time = clock();
-	long WallTime = time(NULL);
+    clock_t begin_time = clock();
+    long WallTime = time(NULL);
 
-	// This includes any precomputation that is necessary to set up the algorithm
-	//  this compute time will be included in the timestamps
-	OneSolver.UseGraph(JustTheGraph);
-	for(int i=0;i<AlgoIters;i++)
-	{
-		OneSolver.IterThreads( NumThreads );
+    // This includes any precomputation that is necessary to set up the algorithm
+    //  this compute time will be included in the timestamps
+    OneSolver.UseGraph(JustTheGraph);
+    for(int i=0;i<AlgoIters;i++)
+    {
+        OneSolver.IterThreads( NumThreads );
 
-		cerr << "                      \r"
-			<< i << "  " 
-			<< float( clock () - begin_time ) /  CLOCKS_PER_SEC << "   " 
-			<< time(NULL)-WallTime ;
+        cerr << "                      \r"
+            << i << "  "
+            << float( clock () - begin_time ) /  CLOCKS_PER_SEC << "   "
+            << time(NULL)-WallTime ;
 
-		OneSolver.GetDiffDist(theDist);
-		for(auto val:theDist)
-		{
-			MyPut(val);
-		}
-		Normalize(theDist);
-		for(auto val:theDist)
-		{
-			MyPut(val);
-		}
-	}
-	cerr << endl;
+        OneSolver.GetDiffDist(theDist);
+        for(auto val:theDist)
+        {
+            MyPut(val);
+        }
+        Normalize(theDist);
+        for(auto val:theDist)
+        {
+            MyPut(val);
+        }
+    }
+    cerr << endl;
 
-	/////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////
 
-	return 0;
+    return 0;
 }
 
 /*
